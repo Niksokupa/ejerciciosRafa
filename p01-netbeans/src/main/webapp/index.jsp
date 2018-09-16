@@ -7,7 +7,7 @@
 <body>
 	<section>
 		<div class="container">
-			<div class="row">
+			<div class="row" >
 				<h2 style="margin-left: 30%;margin-top: 40px;margin-bottom: 40px;">Tabla de multiplicar</h2>
 			</div>
 			<div class="row">
