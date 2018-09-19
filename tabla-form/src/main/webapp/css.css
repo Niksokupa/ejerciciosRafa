@@ -1,0 +1,9 @@
+#formulario {
+  width: 50%;
+  margin-left: 30%;
+  margin-top: 30px;
+}
+
+#textoError {
+    margin-top: 100px;
+}
