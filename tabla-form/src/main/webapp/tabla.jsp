@@ -63,6 +63,9 @@
 							}
 							}
 						%>
+										<a href="index.html">
+					<button class="btn btn-primary">Volver</button>
+				</a>
 					</tbody>
 				</table>
 			</div>

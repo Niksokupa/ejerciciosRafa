@@ -1,0 +1,42 @@
+<html>
+
+<head>
+    <title>Tabla multiplicacionplicar</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+</head>
+
+<body>
+    <h1 style="margin-top: 20px;margin-left: 40%;margin-bottom: 20px;">Tabla multiplicacionplicar</h1>
+
+    <div class="container">
+        <div id="tabla">
+            <div class="row">
+                <table class="table" style="text-align: center;">
+                    <tbody id="cuerpo">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        var multiplicacion = '';
+        var fila;
+        $(document).ready(function () {
+            for (i = 1; i < 10; i++) {
+                for (j = 1; j < 10; j++) {
+                    multiplicacion = multiplicacion + ' <td>' + ' ' + j * i + ' </td>';
+                };
+                fila = '<tr> ' + multiplicacion + '</tr>';
+                $('#cuerpo').append(fila);
+                multiplicacion = '';
+            };
+        });
+    </script>
+
+</body>
+
+</html>
