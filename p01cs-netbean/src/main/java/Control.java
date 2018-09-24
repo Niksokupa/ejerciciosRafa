@@ -45,17 +45,24 @@ public class Control extends HttpServlet {
             ArrayList<Integer> filas;
             ArrayList test = new ArrayList();
             out.print("<br />");
+            out.print("<table border='5' bordercolor='000000'>");
             for(int i = 1; i <= Integer.parseInt(request.getParameter("alto")); i++){
                 tablaJSON = new ArrayList<>();
                 filas = new ArrayList<>();
+                out.println("<tr>");
+                out.println("<br />");
                 for(int j = 1; j <= Integer.parseInt(request.getParameter("ancho")); j++){
                     filas.add(j * i);
-                    out.print(j* i);
+                    out.println("<td>");
+                    out.println(j* i);
+                    out.println("</td>");
                 }
-                out.print("<br />");
+                out.println("</tr>");
                 tablaJSON.addAll(filas);
                 test.add(tablaJSON);
             }
+            out.println("</table>");
+            out.println("<br />");
             out.println(test);
             
             out.println("</body>");
