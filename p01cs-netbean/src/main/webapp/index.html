@@ -1,27 +1,86 @@
 <html>
 
-<head>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-<link rel="stylesheet" href="./css.css">
-</head>
+    <head>
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
 
-<body>
-	<section>
-		<form action="table" method='GET' id="formulario">
-			<div class="form-group">
-				<label for="exampleInputEmail1">Ancho</label> <input type="text"
-					class="form-control" name="ancho">
-			</div>
-			<div class="form-group">
-				<label for="alto">Alto</label> <input
-					type="text" class="form-control" name="alto"
-					>
-			</div>
-			<button type="submit" class="btn btn-primary" >Enviar</button>
-			<button type="reset" class="btn btn-danger">Limpiar</button>
-		</form>
-	</section>
-</body>
+    <body>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col text-center mt-3">
+                        <h3>Tabla de multiplicar</h3>
+                    </div>
+                </div>
+                <form id="formulario">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Ancho</label> <input type="text"
+                                                                             class="form-control" name="ancho">
+                    </div>
+                    <div class="form-group">
+                        <label for="alto">Alto</label> <input
+                            type="text" class="form-control" name="alto"
+                            >
+                    </div>
+                    <button type="button" class="btn btn-primary" id="enviar">Enviar</button>
+                    <button type="reset" class="btn btn-danger" id="limpiar">Limpiar</button>
+                </form>
+                <div class="row">
+                    <div class="col text-center mt-3" id="titulo">
+                        <h3>Resultado</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <table class="table">
+                        <tbody id="cuerpo">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <script>
+            var datos_fila = '';
+            var fila;
+            $(document).ready(function () {
+                $("#titulo").hide();
+                $("#enviar").click(function () {
+                    $.ajax({
+                        url: "table?ancho=10&alto=10",
+                        dataType: "json",
+                        method: "GET",
+                        success: function (data) {
+                            cargaTabla(data)
+                        }
+                    });
+                })
+            });
+            //Cargo los datos del json en la tabla
+            function cargaTabla(data) {
+                $("#titulo").show();
+                $('#cuerpo').empty();
+                array1_length = data.length;
+                array2_length = data[0].arrayCelda.length;
+                for (i = 0; i < array1_length; i++) {
+                    for (j = 0; j < array2_length; j++) {
+                        datos_fila = datos_fila + ' <td>' + JSON.stringify(data[i].arrayCelda[j].r) + ' </td>';
+                    }
+                    ;
+                    fila = '<tr> ' + datos_fila + '</tr>';
+                    $('#cuerpo').append(fila);
+                    datos_fila = '';
+                }
+                ;
+            }
+            ;
+            //Limpiar la tabla
+            $("#limpiar").click(function () {
+                $("#titulo").hide();
+                $('#cuerpo').empty();
+            });
+        </script>
+    </body>
 
 </html>
