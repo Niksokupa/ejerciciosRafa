@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 
+import com.google.gson.Gson;
+import daw.extras.Celdas;
+import daw.extras.Fila;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -29,44 +32,39 @@ public class Control extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Control</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Control at " + request.getContextPath() + "</h1>");
-            out.println("ancho: " + request.getParameter("ancho"));
-            out.println("<br /> alto: " + request.getParameter("alto"));
-            ArrayList<Integer> tablaJSON;
-            ArrayList<Integer> filas;
-            ArrayList test = new ArrayList();
-            out.print("<br />");
-            out.print("<table border='5' bordercolor='000000'>");
-            for(int i = 1; i <= Integer.parseInt(request.getParameter("alto")); i++){
-                tablaJSON = new ArrayList<>();
-                filas = new ArrayList<>();
-                out.println("<tr>");
-                out.println("<br />");
-                for(int j = 1; j <= Integer.parseInt(request.getParameter("ancho")); j++){
-                    filas.add(j * i);
-                    out.println("<td>");
-                    out.println(j* i);
-                    out.println("</td>");
-                }
-                out.println("</tr>");
-                tablaJSON.addAll(filas);
-                test.add(tablaJSON);
-            }
-            out.println("</table>");
-            out.println("<br />");
-            out.println(test);
             
-            out.println("</body>");
-            out.println("</html>");
+            Fila fila;
+            Celdas celdas;
+            
+            ArrayList tablaJSON = new ArrayList<>();
+            ArrayList filas;
+            
+            for(int i = 1; i <= Integer.parseInt(request.getParameter("alto")); i++){
+             
+                filas = new ArrayList<>();
+                
+                fila = new Fila();
+              
+                for(int j = 1; j <= Integer.parseInt(request.getParameter("ancho")); j++){
+                    celdas = new Celdas();
+                    celdas.setI(i);
+                    celdas.setJ(j);
+                    celdas.setR(j*i);
+                    
+                    filas.add(celdas);
+                    
+                }
+                
+                fila.setA(filas);
+                fila.setI(i);
+                tablaJSON.add(fila);
+            }
+            Gson gSon = new Gson();
+            String str = gSon.toJson(tablaJSON);
+            
+            out.print(str);
         }
     }
 
