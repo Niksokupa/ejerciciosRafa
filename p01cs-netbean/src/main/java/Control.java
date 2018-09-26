@@ -64,7 +64,8 @@ public class Control extends HttpServlet {
             Gson gSon = new Gson();
             String str = gSon.toJson(tablaJSON);
             
-            out.print(str);
+            response.getWriter().append(str);
+            //out.print(str);
         }
     }
 
