@@ -107,7 +107,7 @@
 					$("#error1").append(mensaje)
 					$("#diverror1").show();
 				} else if (!regexNumeros.test(ancho)) {
-					mensaje = "Inserta un valor numerico";
+					mensaje = "Inserta un numero entero";
 					$("#error1").empty();
 					$("#error1").append(mensaje)
 					$("#diverror1").show();
@@ -142,7 +142,7 @@
 					$("#error2").append(mensaje)
 					$("#diverror2").show();
 				} else if (!regexNumeros.test(alto)) {
-					mensaje = "Inserta un valor numerico";
+					mensaje = "Inserta un numero entero";
 					$("#error2").empty();
 					$("#error2").append(mensaje)
 					$("#diverror2").show();
@@ -176,16 +176,14 @@
 						cargaTabla(data);
 					},
 					error : function(data) {
-						console.log(data.responseText);
-						$("#divErrorJava").show();
-						$("#strong").empty().append("Error: " + JSON.stringify(data.status))
-						$("#divErrorJava").empty().append(JSON.stringify(data.responseText))
+						errorServer(data);
 					}
 				});
 			});
 		});
 		//Cargo los datos del json en la tabla
 		function cargaTabla(data) {
+			$("#divErrorJava").hide();
 			$("#titulo").show();
 			$('#cuerpo').empty();
 			array1_length = data.length;
@@ -200,9 +198,21 @@
 				fila = '<tr> ' + datos_fila + '</tr>';
 				$('#cuerpo').append(fila);
 				datos_fila = '';
-			}
-			;
+			};
+			
 		};
+		
+		//Errores del server
+		function errorServer(data){
+			var mensaje = "";
+			$("#divErrorJava").show();
+			for(i = 0; i < data.responseJSON.length; i++){
+				mensaje = mensaje + data.responseJSON[i] + "<br />";
+				$("#divErrorJava").empty().append(mensaje);
+			}
+			$("#strong").empty().append("Error: " + JSON.stringify(data.status))	
+		}
+		
 		//Limpiar la tabla
 		$("#limpiar").click(function() {
 			$("#titulo").hide();
