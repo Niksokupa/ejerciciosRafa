@@ -15,28 +15,38 @@
 					<h3>Tabla de multiplicar</h3>
 				</div>
 			</div>
-			<form id="formulario">
-				<div class="form-group">
-					<label id="anchoLabel">Ancho</label> <input type="text"
-						class="ancho form-control" id="ancho">
-					<div class="alert alert-danger" id="diverror1">
-						<strong>Danger!</strong>
-						<div id="error1"></div>
-					</div>
+			<div class="row justify-content-center mt-5">
+				<div class="col-3">
+					<form id="formulario">
+						<div class="form-group">
+							<label id="anchoLabel">Ancho</label> <input type="text"
+								class="ancho form-control" id="ancho">
+							<div class="alert alert-danger" id="diverror1">
+								<strong>Error !</strong>
+								<div id="error1"></div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="altoLabel">Alto</label> <input type="text"
+								class="form-control" id="alto">
+							<div class="alert alert-danger" id="diverror2">
+								<strong>Error!</strong>
+								<div id="error2"></div>
+							</div>
+						</div>
+					</form>
 				</div>
-				<div class="form-group">
-					<label for="altoLabel">Alto</label> <input type="text"
-						class="form-control" id="alto">
-					<div class="alert alert-danger" id="diverror2">
-						<strong>Danger!</strong>
-						<div id="error2"></div>
-					</div>
-				</div>
-				<div class="row justify-content-center mt-5">
-					<button type="button" class="btn btn-primary" id="enviar">Enviar</button>
-					<button type="reset" class="btn btn-danger ml-1" id="limpiar">Limpiar</button>
-				</div>
-			</form>
+			</div>
+			<div class="row justify-content-center mt-5">
+				<button type="button" class="btn btn-primary" id="enviar">Enviar</button>
+				<button type="reset" class="btn btn-danger ml-1" id="limpiar">Limpiar</button>
+			</div>
+			<div class="row justify-content-center mt-5">
+				<div class="alert alert-danger" id="divErrorJava">
+					<strong id="strong"></strong>
+					<div id="error2"></div>
+				</div>		
+			</div>
 			<div class="row">
 				<div class="col text-center mt-3" id="titulo">
 					<h3>Resultado</h3>
@@ -52,82 +62,111 @@
 		</div>
 	</section>
 	<script>
+		//Activar o desactivar boton
+		var enviarAncho = false;
+		var enviarAlto = false;
+
 		var datos_fila = '';
 		var fila;
-        var mensaje;
-        //Expresion regular pero que no uso porque no me funciona
-        var regexNumeros = new RegExp('^[1-9][0-9]*$');
-        var regexNumerosMayor100 = new RegExp('^([1-9][0-9]?|100)$');
-        //Escondo los divs de errores
-        $("#diverror1").hide();
-        $("#diverror2").hide();
-        //Document ready
+		var mensaje;
+		//Expresion regular pero que no uso porque no me funciona
+		var regexNumeros = new RegExp('^[1-9][0-9]*$');
+		var regexNumerosMayor100 = new RegExp('^([1-9][0-9]?|100)$');
+		//Escondo los divs de errores
+		$("#diverror1").hide();
+		$("#diverror2").hide();
+		$("#divErrorJava").hide();
+		//Document ready
 		$(document).ready(function() {
+			$("#enviar").attr("disabled", true);
+
+			//Desabilito el titulo de resultado
 			$("#titulo").hide();
-			
-            //Como la funcion keyup solo acepta clases he tendipo que buscar esta otra forma para que 
-            //la funcion keyup se trague los id en vez de las clases
-            //+info: https://stackoverflow.com/questions/4655376/jquery-bind-keyup-to-body-in-firefox
-            $("body").on('keyup', "#ancho", validarAncho);
-            $("body").on('keyup', "#alto", validarAlto);
 
-            //Metodo de validacion del input ancho
-            function validarAncho() {
-                $("#error1").empty();
-                $("#diverror1").hide();
-                ancho = $("#ancho").val();
-                if (ancho == "") {
-                    mensaje = "Inserta datos en ancho";
-                    $("#error1").empty();
-                    $("#error1").append(mensaje)
-                    $("#diverror1").show();
-                } else if (ancho == 0 || ancho < 0) {
-                    mensaje = "Inserta un valor para ancho mayor que 0";
-                    $("#error1").empty();
-                    $("#error1").append(mensaje)
-                    $("#diverror1").show();
-                } else if ( !regexNumeros.test(ancho) ){
-                    mensaje = "Inserta un valor numerico";
-                    $("#error1").empty();
-                    $("#error1").append(mensaje)
-                    $("#diverror1").show();
-                }  else if ( !regexNumerosMayor100.test(ancho) ){
-                    mensaje = "Inserta un valor menor que 101";
-                    $("#error1").empty();
-                    $("#error1").append(mensaje)
-                    $("#diverror1").show();
-                }
-            }
+			//Como la funcion keyup solo acepta clases he tendipo que buscar esta otra forma para que 
+			//la funcion keyup se trague los id en vez de las clases
+			//+info: https://stackoverflow.com/questions/4655376/jquery-bind-keyup-to-body-in-firefox
+			$("body").on('keyup', "#ancho", validarAncho);
+			$("body").on('keyup', "#alto", validarAlto);
 
-            //Metodo de validacion del alto
-            function validarAlto() {
-                $("#error2").empty();
-                $("#diverror2").hide();
-                alto = $("#alto").val();
-                
-                if (alto == "") {
-                    mensaje = "Inserta datos en alto";
-                    $("#error2").empty();
-                    $("#error2").append(mensaje)
-                    $("#diverror2").show();
-                } else if (alto == 0 || ancho < 0) {
-                    mensaje = "Inserta un valor para alto mayor que 0";
-                    $("#error2").empty();
-                    $("#error2").append(mensaje)
-                    $("#diverror2").show();
-                } else if ( !regexNumeros.test(alto) ){
-                    mensaje = "Inserta un valor numerico";
-                    $("#error2").empty();
-                    $("#error2").append(mensaje)
-                    $("#diverror2").show();
-                } else if ( !regexNumerosMayor100.test(alto) ){
-                    mensaje = "Inserta un valor menor que 101";
-                    $("#error2").empty();
-                    $("#error2").append(mensaje)
-                    $("#diverror2").show();
-                }
-            }
-			
+			//Metodo de validacion del input ancho
+			function validarAncho() {
+				enviarAncho = false;
+
+				$("#error1").empty();
+				$("#diverror1").hide();
+				ancho = $("#ancho").val();
+				if (ancho == "") {
+					mensaje = "Inserta datos en ancho";
+					$("#error1").empty();
+					$("#error1").append(mensaje)
+					$("#diverror1").show();
+				} else if (ancho == 0 || ancho < 0) {
+					mensaje = "Inserta un valor para ancho mayor que 0";
+					$("#error1").empty();
+					$("#error1").append(mensaje)
+					$("#diverror1").show();
+				} else if (!regexNumeros.test(ancho)) {
+					mensaje = "Inserta un valor numerico";
+					$("#error1").empty();
+					$("#error1").append(mensaje)
+					$("#diverror1").show();
+				} else if (!regexNumerosMayor100.test(ancho)) {
+					mensaje = "Inserta un valor menor que 101";
+					$("#error1").empty();
+					$("#error1").append(mensaje)
+					$("#diverror1").show();
+				} else {
+					enviarAncho = true;
+				}
+
+				desabilitarBoton();
+			}
+
+			//Metodo de validacion del alto
+			function validarAlto() {
+				enviarAlto = false;
+
+				$("#error2").empty();
+				$("#diverror2").hide();
+				alto = $("#alto").val();
+
+				if (alto == "") {
+					mensaje = "Inserta datos en alto";
+					$("#error2").empty();
+					$("#error2").append(mensaje)
+					$("#diverror2").show();
+				} else if (alto == 0 || ancho < 0) {
+					mensaje = "Inserta un valor para alto mayor que 0";
+					$("#error2").empty();
+					$("#error2").append(mensaje)
+					$("#diverror2").show();
+				} else if (!regexNumeros.test(alto)) {
+					mensaje = "Inserta un valor numerico";
+					$("#error2").empty();
+					$("#error2").append(mensaje)
+					$("#diverror2").show();
+				} else if (!regexNumerosMayor100.test(alto)) {
+					mensaje = "Inserta un valor menor que 101";
+					$("#error2").empty();
+					$("#error2").append(mensaje)
+					$("#diverror2").show();
+				} else {
+					enviarAlto = true;
+				}
+
+				desabilitarBoton();
+			}
+
+			function desabilitarBoton() {
+				if (enviarAlto == true && enviarAncho == true) {
+					$("#enviar").attr("disabled", false);
+				} else {
+					$("#enviar").attr("disabled", true);
+				}
+
+			}
+
 			$("#enviar").click(function() {
 				$.ajax({
 					url : "json?ancho=" + ancho + "&alto=" + alto,
@@ -135,6 +174,12 @@
 					method : "GET",
 					success : function(data) {
 						cargaTabla(data);
+					},
+					error : function(data) {
+						console.log(data.responseText);
+						$("#divErrorJava").show();
+						$("#strong").empty().append("Error: " + JSON.stringify(data.status))
+						$("#divErrorJava").empty().append(JSON.stringify(data.responseText))
 					}
 				});
 			});
