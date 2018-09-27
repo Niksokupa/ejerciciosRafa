@@ -1,10 +1,8 @@
 <html>
 
 <head>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -19,16 +17,14 @@
 				<div class="col-3">
 					<form id="formulario">
 						<div class="form-group">
-							<label id="anchoLabel">Ancho</label> <input type="text"
-								class="ancho form-control" id="ancho">
+							<label id="anchoLabel">Ancho</label> <input type="text" class="ancho form-control" id="ancho">
 							<div class="alert alert-danger" id="diverror1">
 								<strong>Error !</strong>
 								<div id="error1"></div>
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="altoLabel">Alto</label> <input type="text"
-								class="form-control" id="alto">
+							<label for="altoLabel">Alto</label> <input type="text" class="form-control" id="alto">
 							<div class="alert alert-danger" id="diverror2">
 								<strong>Error!</strong>
 								<div id="error2"></div>
@@ -45,7 +41,7 @@
 				<div class="alert alert-danger" id="divErrorJava">
 					<strong id="strong"></strong>
 					<div id="error2"></div>
-				</div>		
+				</div>
 			</div>
 			<div class="row">
 				<div class="col text-center mt-3" id="titulo">
@@ -69,7 +65,7 @@
 		var datos_fila = '';
 		var fila;
 		var mensaje;
-		//Expresion regular pero que no uso porque no me funciona
+		//Expresion regular
 		var regexNumeros = new RegExp('^[1-9][0-9]*$');
 		var regexNumerosMayor100 = new RegExp('^([1-9][0-9]?|100)$');
 		//Escondo los divs de errores
@@ -77,7 +73,7 @@
 		$("#diverror2").hide();
 		$("#divErrorJava").hide();
 		//Document ready
-		$(document).ready(function() {
+		$(document).ready(function () {
 			$("#enviar").attr("disabled", true);
 
 			//Desabilito el titulo de resultado
@@ -89,6 +85,9 @@
 			$("body").on('keyup', "#ancho", validarAncho);
 			$("body").on('keyup', "#alto", validarAlto);
 
+			//FASE TESTEO CUIDAOOOOOO
+			//$("body").on('keyup', ["#alto", "#ancho"], test);
+
 			//Metodo de validacion del input ancho
 			function validarAncho() {
 				enviarAncho = false;
@@ -96,7 +95,7 @@
 				$("#error1").empty();
 				$("#diverror1").hide();
 				ancho = $("#ancho").val();
-				if (ancho == "") {
+				if (ancho.length == 0) {
 					mensaje = "Inserta datos en ancho";
 					$("#error1").empty();
 					$("#error1").append(mensaje)
@@ -131,7 +130,7 @@
 				$("#diverror2").hide();
 				alto = $("#alto").val();
 
-				if (alto == "") {
+				if (alto.length == 0) {
 					mensaje = "Inserta datos en alto";
 					$("#error2").empty();
 					$("#error2").append(mensaje)
@@ -158,6 +157,8 @@
 				desabilitarBoton();
 			}
 
+
+			//Funcion para desabilitar el boton enviar
 			function desabilitarBoton() {
 				if (enviarAlto == true && enviarAncho == true) {
 					$("#enviar").attr("disabled", false);
@@ -167,57 +168,161 @@
 
 			}
 
-			$("#enviar").click(function() {
+			$("#enviar").click(function () {
 				$.ajax({
-					url : "json?ancho=" + ancho + "&alto=" + alto,
-					dataType : "json",
-					method : "GET",
-					success : function(data) {
+					url: "json?ancho=" + ancho + "&alto=" + alto,
+					dataType: "json",
+					method: "GET",
+					success: function (data) {
 						cargaTabla(data);
 					},
-					error : function(data) {
+					error: function (data) {
 						errorServer(data);
 					}
 				});
 			});
-		});
-		//Cargo los datos del json en la tabla
-		function cargaTabla(data) {
-			$("#divErrorJava").hide();
-			$("#titulo").show();
-			$('#cuerpo').empty();
-			array1_length = data.length;
-			array2_length = data[0].arrayCelda.length;
-			for (i = 0; i < array1_length; i++) {
-				for (j = 0; j < array2_length; j++) {
-					datos_fila = datos_fila + ' <td>'
+
+
+			//Cargo los datos del json en la tabla
+			function cargaTabla(data) {
+				$("#divErrorJava").hide();
+				$("#titulo").show();
+				$('#cuerpo').empty();
+				array1_length = data.length;
+				array2_length = data[0].arrayCelda.length;
+				for (i = 0; i < array1_length; i++) {
+					for (j = 0; j < array2_length; j++) {
+						datos_fila = datos_fila + ' <td>'
 							+ JSON.stringify(data[i].arrayCelda[j].r)
 							+ ' </td>';
-				}
-				;
-				fila = '<tr> ' + datos_fila + '</tr>';
-				$('#cuerpo').append(fila);
-				datos_fila = '';
+					};
+					fila = '<tr> ' + datos_fila + '</tr>';
+					$('#cuerpo').append(fila);
+					datos_fila = '';
+				};
+
 			};
-			
-		};
-		
-		//Errores del server
-		function errorServer(data){
-			var mensaje = "";
-			$("#divErrorJava").show();
-			for(i = 0; i < data.responseJSON.length; i++){
-				mensaje = mensaje + data.responseJSON[i] + "<br />";
-				$("#divErrorJava").empty().append(mensaje);
+
+			//Errores del server
+			function errorServer(data) {
+				var mensaje = "";
+				$("#divErrorJava").show();
+				for (i = 0; i < data.responseJSON.length; i++) {
+					mensaje = mensaje + data.responseJSON[i] + "<br />";
+					$("#divErrorJava").empty().append(mensaje);
+				}
+				$("#strong").empty().append("Error: " + JSON.stringify(data.status))
 			}
-			$("#strong").empty().append("Error: " + JSON.stringify(data.status))	
-		}
-		
-		//Limpiar la tabla
-		$("#limpiar").click(function() {
-			$("#titulo").hide();
-			$('#cuerpo').empty();
+
+			//Limpiar la tabla
+			$("#limpiar").click(function () {
+				$("#titulo").hide();
+				$('#cuerpo').empty();
+				$("#ancho").val('');
+				$("#alto").val('');
+				$("#diverror1").hide();
+				$("#diverror2").hide();
+			});
+
+			// //PARA TESTEAR ------------------------------------------------------------------------------------
+
+			//PORQUE NO FUNCIONA?
+			/*
+			PORQUE CADA VEZ QUE MODIFICO EL INPUT DE ALTO O DE ANCHO A LA VEZ SE ESTA VALIDANDO EL OTRO INPUT, POR LO QUE 
+			EL MENSAJITO DE ERROR DEL OTRO INPUT APARECERA AUN SIN HACER NADA.
+			EJEMPLO:
+			MODIFICO EL INPUT DE ALTO Y EN EL MISMO INSTANTE EL INPUT DE ANCHO SE PONE A VALIDAR LO QUE HAY ASI QUE 
+			TAL COMO LO TENGO MONTADO SALDRA UN MENSAJE DE QUE NO SE PUEDE QUEDAR EN BLANCO
+			*/
+
+			// function test() {
+			// 	enviarAncho = false;
+
+			// 	$("#error1").empty();
+			// 	$("#diverror1").hide();
+			// 	ancho = $("#ancho").val();
+
+			// 	enviarAlto = false;
+
+			// 	$("#error2").empty();
+			// 	$("#diverror2").hide();
+			// 	alto = $("#alto").val();
+
+			// 	vacio(ancho, alto);
+			// 	numero0(ancho, alto);
+			// 	numeromayor100(ancho, alto);
+
+
+			// }
+
+
+			// function vacio(ancho, alto) {
+			// 	if (ancho.length == 0) {
+			// 		mensaje = "Inserta datos en ancho";
+			// 		$("#error1").empty();
+			// 		$("#error1").append(mensaje)
+			// 		$("#diverror1").show();
+			// 		enviarAncho = false;
+			// 	} else {
+			// 		enviarAncho = true;
+			// 	}
+			// 	if (alto.length == 0) {
+			// 		mensaje = "Inserta datos en alto";
+			// 		$("#error2").empty();
+			// 		$("#error2").append(mensaje)
+			// 		$("#diverror2").show();
+			// 		enviarAlto = false;
+			// 	} else {
+			// 		enviarAlto = true;
+			// 	}
+			// 	desabilitarBoton();
+			// }
+
+			// function numero0(ancho, alto) {
+			// 	if (ancho == 0 || ancho < 0) {
+			// 		mensaje = "Inserta un valor para ancho mayor que 0";
+			// 		$("#error1").empty();
+			// 		$("#error1").append(mensaje)
+			// 		$("#diverror1").show();
+			// 		enviarAncho = false;
+			// 	} else {
+			// 		enviarAncho = true;
+			// 	}
+			// 	if (alto == 0 || alto < 0) {
+			// 		mensaje = "Inserta un valor para alto mayor que 0";
+			// 		$("#error2").empty();
+			// 		$("#error2").append(mensaje)
+			// 		$("#diverror2").show();
+			// 		enviarAlto = false;
+			// 	} else {
+			// 		enviarAlto = true;
+			// 	}
+			// 	desabilitarBoton();
+			// }
+
+			// function numeromayor100(ancho, alto) {
+			// 	if (!regexNumerosMayor100.test(ancho) && ancho != "") {
+			// 		mensaje = "Inserta un valor menor que 101";
+			// 		$("#error1").empty();
+			// 		$("#error1").append(mensaje)
+			// 		$("#diverror1").show();
+			// 		enviarAncho = false;
+			// 	} else {
+			// 		enviarAncho = true;
+			// 	}
+			// 	if (!regexNumerosMayor100.test(alto) && alto != "") {
+			// 		mensaje = "Inserta un valor menor que 101";
+			// 		$("#error2").empty();
+			// 		$("#error2").append(mensaje)
+			// 		$("#diverror2").show();
+			// 		enviarAlto = false;
+			// 	} else {
+			// 		enviarAlto = true;
+			// 	}
+			// 	desabilitarBoton();
+			// }
 		});
+
 	</script>
 </body>
 

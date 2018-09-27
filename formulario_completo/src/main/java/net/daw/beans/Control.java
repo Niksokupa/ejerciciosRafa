@@ -63,8 +63,6 @@ public class Control extends HttpServlet {
 		ArrayList<ArrayList> errores = new ArrayList<ArrayList>();
 		ArrayList<String> lineaerrores;
 
-		StringBuilder sb = new StringBuilder();
-
 		if (request.getParameter("ancho").equals("")) {
 			lineaerrores = new ArrayList<String>();
 			lineaerrores.add("Error: Ancho vacio");
@@ -75,12 +73,12 @@ public class Control extends HttpServlet {
 			lineaerrores.add("Error: Alto vacio");
 			errores.add(lineaerrores);
 		}
-		if (!request.getParameter("alto").matches("^[0-9][0-9]*$")) {
+		if (!request.getParameter("alto").matches("^[0-9][0-9]*$") && !request.getParameter("alto").equals("")) {
 			lineaerrores = new ArrayList<String>();
 			lineaerrores.add("Error: Introduce caracteres numericos o positivos en alto");
 			errores.add(lineaerrores);
 		} 
-		if (!request.getParameter("ancho").matches("^[0-9][0-9]*$")) {
+		if (!request.getParameter("ancho").matches("^[0-9][0-9]*$") && !request.getParameter("ancho").equals("")) {
 			lineaerrores = new ArrayList<String>();
 			lineaerrores.add("Error: Introduce caracteres numericos o positivos en ancho");
 			errores.add(lineaerrores);
