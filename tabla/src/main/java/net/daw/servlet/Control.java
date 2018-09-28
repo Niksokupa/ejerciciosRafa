@@ -3,6 +3,7 @@ package net.daw.servlet;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -74,59 +75,32 @@ public class Control extends HttpServlet {
 			Gson gSon = new Gson();
 			String str = "";
 
-			Double primero = Double.parseDouble(request.getParameter("primero"));
-			Double segundo = Double.parseDouble(request.getParameter("segundo"));
+			Integer primero = Integer.parseInt(request.getParameter("primero"));
+			Integer segundo = Integer.parseInt(request.getParameter("segundo"));
 
-			Double resultado = 0.0;
+			Integer resultado = 0;
 
 			BigDecimal value = new BigDecimal(0);
 
 			arrayResultado = new ArrayList();
 
 			switch (accion) {
-			case "Suma":
-				resultado = primero + segundo;
-				arrayResultado.add(resultado);
-				str = gSon.toJson(arrayResultado);
-				response.getWriter().append(str);
-				break;
-			case "Resta":
-				resultado = primero - segundo;
-				arrayResultado.add(resultado);
-				str = gSon.toJson(arrayResultado);
-				response.getWriter().append(str);
-				break;
-			case "Multiplicacion":
-				resultado = primero * segundo;
-				arrayResultado.add(resultado);
-				str = gSon.toJson(arrayResultado);
-				response.getWriter().append(str);
-				break;
-			case "Division":
-				if (segundo == 0) {
-					response.setStatus(404);
-					lineaerrores = new ArrayList<String>();
-					lineaerrores.add("Error: El segundo operando no puede ser 0");
+			default:
+				try
+				{
+				    Thread.sleep((int)(Math.random()*2000));
+				    lineaerrores = new ArrayList<String>();
+					resultado = primero * segundo;
+					lineaerrores.add(resultado.toString());
 					errores.add(lineaerrores);
 					str = gSon.toJson(errores);
 					response.getWriter().write(str);
 					break;
-				} else {
-					resultado = primero / segundo;
-					arrayResultado.add(resultado);
-					str = gSon.toJson(arrayResultado);
-					response.getWriter().append(str);
-					break;
 				}
-
-			default:
-				response.setStatus(404);
-				lineaerrores = new ArrayList<String>();
-				lineaerrores.add("Error: Selecciona una accion");
-				errores.add(lineaerrores);
-				str = gSon.toJson(errores);
-				response.getWriter().write(str);
-				break;
+				catch(InterruptedException ex)
+				{
+				    Thread.currentThread().interrupt();
+				}
 			}
 		}
 	}

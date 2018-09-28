@@ -35,7 +35,6 @@
                             <select class="form-control" id="opcionAccion">
                                 <option>Selecciona una accion</option>
                                 <option>Suma</option>
-                                <option>Resta</option>
                                 <option>Multiplicacion</option>
                                 <option>Division</option>
                             </select>
@@ -67,11 +66,9 @@
                 </div>
             </div>
             <div class="row">
-                <table class="table">
-                    <tbody class="text-center" id="cuerpo">
+                <div class="col " id="tabla">
 
-                    </tbody>
-                </table>
+                </div>
             </div>
         </div>
     </section>
@@ -188,61 +185,57 @@
 
             //Funcion para desabilitar el boton enviar
             function desabilitarBoton() {
-                if (enviarPrimero == true && enviarSegundo == true && enviarAccion == true) {
-                    $("#enviar").attr("disabled", false);
-                } else {
-                    $("#enviar").attr("disabled", true);
-                }
-
+                // if (enviarPrimero == true && enviarSegundo == true && enviarAccion == true) {
+                //     $("#enviar").attr("disabled", false);
+                // } else {
+                //     $("#enviar").attr("disabled", true);
+                // }
+                $("#enviar").attr("disabled", false);
             }
 
             $("#enviar").click(function () {
+                var tabla = '';
+                tabla += `<table class="table text-center"> <tbody>`;
+                for (i = 0; i <= primero; i++) {
+                    tabla += `<tr >`;
+                    for (j = 0; j <= segundo; j++) {
+                        tabla += `<td id="${i}-${j}"></td>`;
+                        if(i = 0 ){
+                            tabla += `<td id="${i}-${j}">${j}</td>`;
+                        }else{
+                            tabla += `<td id="${i}-${j}"></td>`;
+                        }
+                    }
+                    tabla += `</tr>`;
+                }
+                tabla += `</tbody></table>`;
+                $('#tabla').show()
+                $('#tabla').append(tabla);
+
+                for (i = 1; i <= primero; i++) {
+                    for (j = 1; j <= segundo; j++) {
+                        db(i, j);
+                    }
+                }
+            });
+
+            function db(i, j) {
                 $.ajax({
-                    url: "tabla?primero=" + primero + "&segundo=" + segundo + "&accion=" + accion,
+                    url: `tabla?primero=${i}&segundo=${j}&accion=juanito`,
                     dataType: "json",
                     method: "GET",
                     success: function (data) {
-                        cargaResultado(data);
+                        $(`#${i}-${j}`).append(data[0]);
                     },
                     error: function (data) {
-                        errorServer(data);
+                        //errorServer(data);
                     }
-                });
-            });
+                })
+            } (i, j);
 
 
             //Cargo los datos del json en la tabla
             function cargaResultado(data) {
-                $("#divErrorJava").hide();
-                $("#titulo").show();
-                $('#cuerpo').empty();
-
-                var res;
-                var titulo;
-                var resultado = data[0];
-
-                switch (accion) {
-                    case 'Suma':
-                        titulo = 'Resultado de la suma.'
-                        res = primero + ' + ' + segundo + ' = ' + resultado;
-                        break;
-                    case 'Resta':
-                        titulo = 'Resultado de la resta.'
-                        res = primero + ' - ' + segundo + ' = ' + resultado;
-                        break;
-                    case 'Multiplicacion':
-                        titulo = 'Resultado de la multiplicacion.'
-                        res = primero + ' x ' + segundo + ' = ' + resultado;
-                        break;
-                    case 'Division':
-                        titulo = 'Resultado de la division.'
-                        res = primero + ' / ' + segundo + ' = ' + resultado;
-                        break;
-                }
-
-                $("#resultadoOperacion").empty().append(res);
-                $("#tituloResultado").empty().append(titulo);
-
 
             };
 
