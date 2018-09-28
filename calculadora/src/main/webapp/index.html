@@ -10,7 +10,7 @@
         <div class="container">
             <div class="row">
                 <div class="col text-center mt-3">
-                    <h3>Tabla de multiplicar de numeros enteros positivos</h3>
+                    <h3>Tabla de multiplicar</h3>
                 </div>
             </div>
             <div class="row justify-content-center mt-5">
@@ -88,8 +88,7 @@
         var indice;
         var accion;
         //Expresion regular
-        var regexNumeros = new RegExp('^-?([1-9][0-9]?|100)$');
-        var regexNumerosMayor100 = new RegExp('^([1-9][0-9]?|100)$');
+        var regexNumeros = new RegExp('^-?[0-9]+([,.][0-9]+)?$');
 
         //Escondo los divs de errores
         $("#diverror1").hide();
@@ -132,28 +131,26 @@
                 desabilitarBoton();
             });
 
+
+            //Funcion que me muestra los mensajes de error debajo de cada input
+            function mensajes(error,div,mensaje){
+                $(`#${error}`).empty().append(mensaje);
+                $(`#${div}`).show();
+            }
             //Metodo de validacion del input primero
             function validarPrimero() {
-
                 enviarPrimero = false;
 
                 $("#error1").empty();
                 $("#diverror1").hide();
                 primero = $("#primero").val();
                 if (primero.length == 0) {
-                    mensaje = "Inserta datos en primero";
-                    $("#error1").empty();
-                    $("#error1").append(mensaje)
-                    $("#diverror1").show();
+                    mensajes('error1','diverror1','Inserta datos en primero');
                 } else if (!regexNumeros.test(primero)) {
-                    mensaje = "Introduce caracteres numericos, enteros entre -100 y 100 o distinto de 0 en primero";
-                    $("#error1").empty();
-                    $("#error1").append(mensaje)
-                    $("#diverror1").show();
+                    mensajes('error1','diverror1','Introduce caracteres numericos  primero');
                 } else {
                     enviarPrimero = true;
                 }
-
                 desabilitarBoton();
             }
 
@@ -166,19 +163,12 @@
                 segundo = $("#segundo").val();
 
                 if (segundo.length == 0) {
-                    mensaje = "Inserta datos en segundo";
-                    $("#error2").empty();
-                    $("#error2").append(mensaje)
-                    $("#diverror2").show();
+                    mensajes('error2','diverror2','Inserta datos en segundo');
                 } else if (!regexNumeros.test(segundo)) {
-                    mensaje = "Introduce caracteres numericos, enteros entre -100 y 100 o distinto de 0 en segundo";
-                    $("#error2").empty();
-                    $("#error2").append(mensaje)
-                    $("#diverror2").show();
+                    mensajes('error2','diverror2','Introduce caracteres numericos en segundo');
                 } else {
                     enviarSegundo = true;
                 }
-
                 desabilitarBoton();
             }
 
@@ -262,6 +252,9 @@
                 $("#segundo").val('');
                 $("#diverror1").hide();
                 $("#diverror2").hide();
+                $("#divErrorJava").hide();
+                $("#opcionAccion").val(0);
+
             });
         });
     </script>
