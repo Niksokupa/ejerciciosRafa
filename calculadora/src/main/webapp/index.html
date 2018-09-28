@@ -88,7 +88,7 @@
         var indice;
         var accion;
         //Expresion regular
-        var regexNumeros = new RegExp('^[1-9][0-9]*$');
+        var regexNumeros = new RegExp('^-?([1-9][0-9]?|100)$');
         var regexNumerosMayor100 = new RegExp('^([1-9][0-9]?|100)$');
 
         //Escondo los divs de errores
@@ -145,18 +145,8 @@
                     $("#error1").empty();
                     $("#error1").append(mensaje)
                     $("#diverror1").show();
-                } else if (primero == 0 || primero < 0) {
-                    mensaje = "Inserta un valor para primero mayor que 0";
-                    $("#error1").empty();
-                    $("#error1").append(mensaje)
-                    $("#diverror1").show();
                 } else if (!regexNumeros.test(primero)) {
-                    mensaje = "Inserta un numero entero";
-                    $("#error1").empty();
-                    $("#error1").append(mensaje)
-                    $("#diverror1").show();
-                } else if (!regexNumerosMayor100.test(primero)) {
-                    mensaje = "Inserta un valor menor que 101";
+                    mensaje = "Introduce caracteres numericos, enteros entre -100 y 100 o distinto de 0 en primero";
                     $("#error1").empty();
                     $("#error1").append(mensaje)
                     $("#diverror1").show();
@@ -180,18 +170,8 @@
                     $("#error2").empty();
                     $("#error2").append(mensaje)
                     $("#diverror2").show();
-                } else if (segundo == 0 || primero < 0) {
-                    mensaje = "Inserta un valor para segundo mayor que 0";
-                    $("#error2").empty();
-                    $("#error2").append(mensaje)
-                    $("#diverror2").show();
                 } else if (!regexNumeros.test(segundo)) {
-                    mensaje = "Inserta un numero entero";
-                    $("#error2").empty();
-                    $("#error2").append(mensaje)
-                    $("#diverror2").show();
-                } else if (!regexNumerosMayor100.test(segundo)) {
-                    mensaje = "Inserta un valor menor que 101";
+                    mensaje = "Introduce caracteres numericos, enteros entre -100 y 100 o distinto de 0 en segundo";
                     $("#error2").empty();
                     $("#error2").append(mensaje)
                     $("#diverror2").show();
