@@ -196,21 +196,16 @@
             $("#enviar").click(function () {
                 var tabla = '';
                 tabla += `<table class="table text-center"> <tbody>`;
-                for (i = 0; i <= primero; i++) {
+                for (var i = 1; i <= primero; i++) {
                     tabla += `<tr >`;
-                    for (j = 0; j <= segundo; j++) {
+                    for (var j = 1; j <= segundo; j++) {
                         tabla += `<td id="${i}-${j}"></td>`;
-                        if(i = 0 ){
-                            tabla += `<td id="${i}-${j}">${j}</td>`;
-                        }else{
-                            tabla += `<td id="${i}-${j}"></td>`;
-                        }
                     }
                     tabla += `</tr>`;
                 }
                 tabla += `</tbody></table>`;
                 $('#tabla').show()
-                $('#tabla').append(tabla);
+                $('#tabla').empty().append(tabla);
 
                 for (i = 1; i <= primero; i++) {
                     for (j = 1; j <= segundo; j++) {
@@ -221,11 +216,11 @@
 
             function db(i, j) {
                 $.ajax({
-                    url: `tabla?primero=${i}&segundo=${j}&accion=juanito`,
+                    url: "tabla?primero=" + i + "&segundo=" + j + "&accion=juanito",
                     dataType: "json",
                     method: "GET",
                     success: function (data) {
-                        $(`#${i}-${j}`).append(data[0]);
+                        $(`#${i}-${j}`).empty().append(data[0]);
                     },
                     error: function (data) {
                         //errorServer(data);
