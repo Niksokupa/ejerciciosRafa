@@ -30,7 +30,7 @@
                                 <div id="error2"></div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="selectEntero">
                             <label for="labelAccion">Accion</label>
                             <select class="form-control" id="opcionAccion">
                                 <option>Selecciona una accion</option>
@@ -85,13 +85,14 @@
         var indice;
         var accion;
         //Expresion regular
-        var regexNumeros = new RegExp('^-?[0-9]+([.][0-9]+)?$');
+        var regexNumeros = new RegExp('^[1-9][0-9]*$');
 
         //Escondo los divs de errores
         $("#diverror1").hide();
         $("#diverror2").hide();
         $("#diverror3").hide();
         $("#divErrorJava").hide();
+        $("#selectEntero").hide();
         //Document ready
         $(document).ready(function () {
             $("#enviar").attr("disabled", true);
@@ -157,7 +158,7 @@
                 if (primero.length == 0) {
                     mensajes('error1', 'diverror1', 'Inserta datos en primero');
                 } else if (!regexNumeros.test(primero)) {
-                    mensajes('error1', 'diverror1', 'Introduce caracteres numericos o decimales sin comas en primero');
+                    mensajes('error1', 'diverror1', 'Introduce caracteres numericos enteros en primero');
                 } else {
                     enviarPrimero = true;
                 }
@@ -175,7 +176,7 @@
                 if (segundo.length == 0) {
                     mensajes('error2', 'diverror2', 'Inserta datos en segundo');
                 } else if (!regexNumeros.test(segundo)) {
-                    mensajes('error2', 'diverror2', 'Introduce caracteres numericos o decimales sin comas en segundo');
+                    mensajes('error2', 'diverror2', 'Introduce caracteres numericos enteros en segundo');
                 } else {
                     enviarSegundo = true;
                 }
@@ -185,12 +186,11 @@
 
             //Funcion para desabilitar el boton enviar
             function desabilitarBoton() {
-                // if (enviarPrimero == true && enviarSegundo == true && enviarAccion == true) {
-                //     $("#enviar").attr("disabled", false);
-                // } else {
-                //     $("#enviar").attr("disabled", true);
-                // }
-                $("#enviar").attr("disabled", false);
+                if (enviarPrimero == true && enviarSegundo == true) {
+                    $("#enviar").attr("disabled", false);
+                } else {
+                    $("#enviar").attr("disabled", true);
+                }
             }
 
             $("#enviar").click(function () {
@@ -216,7 +216,7 @@
 
             function db(i, j) {
                 $.ajax({
-                    url: "tabla?primero=" + i + "&segundo=" + j + "&accion=juanito",
+                    url: `tabla?primero=${i}&segundo=${j}&accion=Multi`,
                     dataType: "json",
                     method: "GET",
                     success: function (data) {
@@ -226,8 +226,7 @@
                         //errorServer(data);
                     }
                 })
-            } (i, j);
-
+            };
 
             //Cargo los datos del json en la tabla
             function cargaResultado(data) {
@@ -259,6 +258,7 @@
                 primero = '';
                 segundo = '';
                 desabilitarBoton();
+                $('#tabla').hide();
 
             });
         });

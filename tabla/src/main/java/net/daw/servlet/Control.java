@@ -37,7 +37,7 @@ public class Control extends HttpServlet {
 		response.setContentType("application/json");
 		String accion = request.getParameter("accion");
 
-		String regex = "^-?[0-9]+([.][0-9]+)?$";
+		String regex = "^[1-9][0-9]*$";
 
 		ArrayList<ArrayList> errores = new ArrayList<ArrayList>();
 		ArrayList<String> lineaerrores;
@@ -85,7 +85,7 @@ public class Control extends HttpServlet {
 			arrayResultado = new ArrayList();
 
 			switch (accion) {
-			default:
+			case "Multi":
 				try
 				{
 				    Thread.sleep((int)(Math.random()*2000));
@@ -101,6 +101,7 @@ public class Control extends HttpServlet {
 				{
 				    Thread.currentThread().interrupt();
 				}
+				break;
 			}
 		}
 	}
