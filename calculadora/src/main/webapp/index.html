@@ -121,6 +121,7 @@
 
                 if (indice > 0) {
                     enviarAccion = true;
+                    dividirPor0();
                 } else {
                     enviarAccion = false;
                     mensaje = "Selecciona una accion";
@@ -128,8 +129,6 @@
                     $("#error3").append(mensaje)
                     $("#diverror3").show();
                 }
-                
-				dividirPor0();
                 desabilitarBoton();
             });
 
@@ -268,6 +267,8 @@
                 $("#diverror2").hide();
                 $("#divErrorJava").hide();
                 $("#opcionAccion").val(0);
+                enviarPrimero = false;
+                desabilitarBoton();
 
             });
         });
