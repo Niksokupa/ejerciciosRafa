@@ -128,9 +128,23 @@
                     $("#error3").append(mensaje)
                     $("#diverror3").show();
                 }
+                
+				dividirPor0();
                 desabilitarBoton();
             });
 
+            function dividirPor0(){
+                if(segundo === "0" && indice === 4){
+                	enviarAccion = false;
+                    mensaje = "El segundo operando no puede ser 0";
+                    $("#error3").empty();
+                    $("#error3").append(mensaje)
+                    $("#diverror3").show();
+                }else{
+                	enviarAccion = true;
+                	$("#diverror3").hide();
+                }
+            }
 
             //Funcion que me muestra los mensajes de error debajo de cada input
             function mensajes(error,div,mensaje){

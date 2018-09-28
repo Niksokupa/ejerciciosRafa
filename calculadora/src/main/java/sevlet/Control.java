@@ -103,10 +103,10 @@ public class Control extends HttpServlet {
 				response.getWriter().append(str);
 				break;
 			case "Division":
-				if (primero == 0 && segundo == 0) {
+				if (segundo == 0) {
 					response.setStatus(404);
 					lineaerrores = new ArrayList<String>();
-					lineaerrores.add("Error: 0 / 0 = Resultado indefinido");
+					lineaerrores.add("Error: El segundo operando no puede ser 0");
 					errores.add(lineaerrores);
 					str = gSon.toJson(errores);
 					response.getWriter().write(str);
