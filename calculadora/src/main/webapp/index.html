@@ -88,7 +88,7 @@
         var indice;
         var accion;
         //Expresion regular
-        var regexNumeros = new RegExp('^-?[0-9]+([,.][0-9]+)?$');
+        var regexNumeros = new RegExp('^-?[0-9]+([.][0-9]+)?$');
 
         //Escondo los divs de errores
         $("#diverror1").hide();
@@ -147,7 +147,7 @@
                 if (primero.length == 0) {
                     mensajes('error1','diverror1','Inserta datos en primero');
                 } else if (!regexNumeros.test(primero)) {
-                    mensajes('error1','diverror1','Introduce caracteres numericos  primero');
+                    mensajes('error1','diverror1','Introduce caracteres numericos o decimales sin comas en primero');
                 } else {
                     enviarPrimero = true;
                 }
@@ -165,7 +165,7 @@
                 if (segundo.length == 0) {
                     mensajes('error2','diverror2','Inserta datos en segundo');
                 } else if (!regexNumeros.test(segundo)) {
-                    mensajes('error2','diverror2','Introduce caracteres numericos en segundo');
+                    mensajes('error2','diverror2','Introduce caracteres numericos o decimales sin comas en segundo');
                 } else {
                     enviarSegundo = true;
                 }

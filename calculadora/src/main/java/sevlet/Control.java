@@ -36,7 +36,7 @@ public class Control extends HttpServlet {
 		response.setContentType("application/json");
 		String accion = request.getParameter("accion");
 
-		String regex = "^-?[0-9]+([,.][0-9]+)?$";
+		String regex = "^-?[0-9]+([.][0-9]+)?$";
 
 		ArrayList<ArrayList> errores = new ArrayList<ArrayList>();
 		ArrayList<String> lineaerrores;
@@ -52,14 +52,14 @@ public class Control extends HttpServlet {
 			lineaerrores.add("Error: segundo vacio");
 			errores.add(lineaerrores);
 		}
-		if (!request.getParameter("segundo").matches(regex) && !request.getParameter("segundo").equals("")) {
-			lineaerrores = new ArrayList<String>();
-			lineaerrores.add("Error: Introduce caracteres numericos en segundo");
-			errores.add(lineaerrores);
-		}
 		if (!request.getParameter("primero").matches(regex) && !request.getParameter("primero").equals("")) {
 			lineaerrores = new ArrayList<String>();
-			lineaerrores.add("Error: Introduce caracteres numericos en primero");
+			lineaerrores.add("Error: Introduce caracteres numericos o decimales sin comas en primero");
+			errores.add(lineaerrores);
+		}
+		if (!request.getParameter("segundo").matches(regex) && !request.getParameter("segundo").equals("")) {
+			lineaerrores = new ArrayList<String>();
+			lineaerrores.add("Error: Introduce caracteres numericos o decimales sin comas en segundo");
 			errores.add(lineaerrores);
 		}
 		if (errores.isEmpty() == false) {
