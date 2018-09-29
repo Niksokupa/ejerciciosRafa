@@ -55,12 +55,12 @@ public class Control extends HttpServlet {
 		}
 		if (!request.getParameter("primero").matches(regex) && !request.getParameter("primero").equals("")) {
 			lineaerrores = new ArrayList<String>();
-			lineaerrores.add("Error: Introduce caracteres numericos o decimales sin comas en primero");
+			lineaerrores.add("Error: Introduce caracteres numericos positivos en primero");
 			errores.add(lineaerrores);
 		}
 		if (!request.getParameter("segundo").matches(regex) && !request.getParameter("segundo").equals("")) {
 			lineaerrores = new ArrayList<String>();
-			lineaerrores.add("Error: Introduce caracteres numericos o decimales sin comas en segundo");
+			lineaerrores.add("Error: Introduce caracteres numericos positivos en segundo");
 			errores.add(lineaerrores);
 		}
 		if (errores.isEmpty() == false) {
@@ -102,6 +102,13 @@ public class Control extends HttpServlet {
 				    Thread.currentThread().interrupt();
 				}
 				break;
+				default :
+					response.setStatus(404);
+					Gson gSon2 = new Gson();
+					lineaerrores = new ArrayList<String>();
+					lineaerrores.add("Error: selecciona Multi");
+					String str2 = gSon2.toJson(lineaerrores);
+					response.getWriter().write(str2);
 			}
 		}
 	}
