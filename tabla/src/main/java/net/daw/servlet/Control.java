@@ -84,7 +84,7 @@ public class Control extends HttpServlet {
 
 			arrayResultado = new ArrayList();
 
-			switch (accion) {
+			switch ("Multi") {
 			case "Multi":
 				try
 				{
