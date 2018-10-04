@@ -5,13 +5,13 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
-  	<servlet-name>Control2</servlet-name>
-  	<display-name>Control2</display-name>
+  	<servlet-name>Control</servlet-name>
+  	<display-name>Control</display-name>
   	<description></description>
-  	<servlet-class>net.daw.servlet.Control</servlet-class>
+  	<servlet-class>net.daw.control.Control</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>Control2</servlet-name>
-  	<url-pattern>/tabla</url-pattern>
+  	<servlet-name>Control</servlet-name>
+  	<url-pattern>/request</url-pattern>
   </servlet-mapping>
 </web-app>

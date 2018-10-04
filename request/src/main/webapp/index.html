@@ -1,0 +1,44 @@
+<html>
+<head>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+<button id="button">
+Click
+</button>
+<div id="respuesta">
+</div>
+<script>
+$( document ).ready(function() {
+	$("button").click(function(){
+		$.ajax({
+			url: "request",
+			dataType: "json",
+			method: "GET",
+			success: function (data) {
+				rellenar(data);
+			},
+			error: function (data) {
+				errorServer(data);
+			}
+		});
+	});
+	
+	function rellenar(data){
+		$('#respuesta').empty();
+		array1_length = data.length;
+		res = '';
+		for (i = 0; i < array1_length; i++) {
+			res = res + '<br>' + JSON.stringify(data[i]); 
+		};
+		$('#respuesta').append(res);
+	}
+});
+</script>
+</body>
+</html>
