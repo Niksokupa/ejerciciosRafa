@@ -218,7 +218,6 @@
                 $("#tituloResultado").empty().append(`Status: ${data.status}`);
                 var params = '';
                 Object.keys(data.params).forEach(function (key) {
-                    console.log(key, data.params[key]);
                     params = `${params} <br /> ${key} = ${data.params[key]}`;
                 });
                 $("#resultadoParametros").empty().append(params);

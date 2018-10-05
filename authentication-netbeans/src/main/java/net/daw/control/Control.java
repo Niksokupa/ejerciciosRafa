@@ -64,89 +64,58 @@ public class Control extends HttpServlet {
                             sesion.setAttribute("sesionUsuario", usuario);
 
                             //Añado el mensaje al json
-                            json.setStatus(200);
-                            json.setMsg("Usuario loggeado correctamente");
-                            json.setParams(MakePairs(request.getQueryString()));
-                            response.setStatus(200);
-                            response.getWriter().append(gSon.toJson(json));
+                            respuesta(200,"Usuario loggeado correctamente",MakePairs(request.getQueryString()),response,request);
                             break;
                         } else {
-                            json.setStatus(401);
-                            json.setMsg("Authentication error");
-                            json.setParams(MakePairs(request.getQueryString()));
-                            response.setStatus(401);
-                            response.getWriter().append(gSon.toJson(json));
+                            respuesta(401,"Authentication error",MakePairs(request.getQueryString()),response,request);
                             break;
                         }
                     } else {
-                        json.setStatus(401);
-                        json.setMsg("Usuario o contraseña vacio");
-                        json.setParams(MakePairs(request.getQueryString()));
-                        response.setStatus(401);
-                        response.getWriter().append(gSon.toJson(json));
+                        respuesta(401,"Usuario o contraseña vacio",MakePairs(request.getQueryString()),response,request);
                         break;
                     }
 
                 case "logout":
                     sesion.invalidate();
-                    json.setStatus(200);
-                    json.setMsg("Sesion cerrada correctamente");
-                    json.setParams(MakePairs(request.getQueryString()));
-                    response.setStatus(200);
-                    response.getWriter().append(gSon.toJson(json));
+                    respuesta(200,"Sesion cerrada correctamente",MakePairs(request.getQueryString()),response,request);
                     break;
 
                 case "check":
                     if (sesion.getAttribute("sesionUsuario") != null) {
-                        json.setStatus(200);
-                        json.setMsg("Usuario loggeado: " + sesion.getAttribute("sesionUsuario").toString());
-                        json.setParams(MakePairs(request.getQueryString()));
-                        response.setStatus(200);
-                        response.getWriter().append(gSon.toJson(json));
+                        respuesta(200,"Usuario loggeado: " + sesion.getAttribute("sesionUsuario").toString(),MakePairs(request.getQueryString()),response,request);
                         break;
                     } else {
-                        json.setStatus(401);
-                        json.setMsg("Logeate para ver la sesion");
-                        json.setParams(MakePairs(request.getQueryString()));
-                        response.setStatus(401);
-                        response.getWriter().append(gSon.toJson(json));
+                        respuesta(401,"Logeate para ver la sesion",MakePairs(request.getQueryString()),response,request);
                         break;
                     }
 
                 case "secret":
                     if (sesion.getAttribute("sesionUsuario") != null) {
-                        json.setStatus(200);
-                        json.setMsg("1236512368512635");
-                        json.setParams(MakePairs(request.getQueryString()));
-                        response.setStatus(200);
-                        response.getWriter().append(gSon.toJson(json));
+                        respuesta(200,"1236512368512635",MakePairs(request.getQueryString()),response,request);
                         break;
                     } else {
-                        json.setStatus(401);
-                        json.setMsg("Logeate para ver codigo secreto");
-                        json.setParams(MakePairs(request.getQueryString()));
-                        response.setStatus(401);
-                        response.getWriter().append(gSon.toJson(json));
+                        respuesta(401,"Logeate para ver codigo secreto",MakePairs(request.getQueryString()),response,request);
                         break;
                     }
 
                 default:
-                    json.setStatus(401);
-                    json.setMsg("Añade una opcion");
-                    json.setParams(MakePairs(request.getQueryString()));
-                    response.setStatus(401);
-                    response.getWriter().append(gSon.toJson(json));
+                    respuesta(401, "Opciones validas: loggin/check/secret/logout", MakePairs(request.getQueryString()), response, request);
                     break;
 
             }
         } else {
-            json.setStatus(401);
-            json.setMsg("Añade una opcion");
-            json.setParams(MakePairs(request.getQueryString()));
-            response.setStatus(401);
-            response.getWriter().append(gSon.toJson(json));
+            respuesta(401, "Añade una opcion", MakePairs(request.getQueryString()), response, request);
         }
-
+    }
+    public void respuesta(Integer status, String msg, Map<String, String> querys,HttpServletResponse response,HttpServletRequest request ) throws IOException {
+        Gson gSon = new Gson();
+        Json json = new Json();
+        
+        json.setStatus(status);
+        json.setMsg(msg);
+        json.setParams(querys);
+        response.setStatus(status);
+        response.getWriter().append(gSon.toJson(json));
     }
 
     //Fuente:
@@ -176,12 +145,14 @@ public class Control extends HttpServlet {
             }
         }
         Iterator it = retVal.entrySet().iterator();
-        while(it.hasNext()){
-            Map.Entry res = (Map.Entry)it.next();
+        while (it.hasNext()) {
+            Map.Entry res = (Map.Entry) it.next();
             querys.add(res.getKey() + " = " + res.getValue());
         }
         return retVal;
     }
+
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
