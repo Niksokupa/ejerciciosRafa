@@ -96,7 +96,7 @@ public class Control extends HttpServlet {
 
             }
         } else {
-            respuesta(401, "Añade una opcion", MakePairs(request.getQueryString()), response, request);
+            respuesta(401, "Añade una opcion", null, response, request);
         }
     }
     public void respuesta(Integer status, String msg, Map<String, String> querys,HttpServletResponse response,HttpServletRequest request ) throws IOException {
