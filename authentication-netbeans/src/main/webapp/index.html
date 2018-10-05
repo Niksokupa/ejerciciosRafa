@@ -10,10 +10,10 @@
         <div class="container">
             <div class="row">
                 <div class="col text-center mt-3">
-                    <h3>Tabla de multiplicar</h3>
+                    <h3>Authentication</h3>
                 </div>
             </div>
-            <div class="row justify-content-center mt-5">
+            <div class="row justify-content-center mt-5" id="form">
                 <div class="col-3">
                     <form id="formulario">
                         <div class="form-group">
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="segundoLabel">Contraseña</label>
+                            <label for="segundoLabel">Password</label>
                             <input type="text" class="form-control" id="segundo">
                             <div class="alert alert-danger" id="diverror2">
                                 <strong>Error!</strong>
@@ -219,7 +219,7 @@
                 var params = '';
                 Object.keys(data.params).forEach(function (key) {
                     console.log(key, data.params[key]);
-                    params = `${params} <br /> ${key} = ${data.params[key]}`; 
+                    params = `${params} <br /> ${key} = ${data.params[key]}`;
                 });
                 $("#resultadoParametros").empty().append(params);
 
@@ -241,6 +241,7 @@
             //Limpiar la tabla
             $("#limpiar").click(function () {
                 $("#titulo").hide();
+                $("#tituloError").hide();
                 $('#cuerpo').empty();
                 $("#primero").val('');
                 $("#segundo").val('');
@@ -250,6 +251,11 @@
                 $("#opcionAccion").val(0);
                 enviarPrimero = false;
                 desabilitarBoton();
+                $(':input', '#form')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
 
             });
         });
