@@ -5,6 +5,9 @@
  */
 package net.daw.clases;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  *
  * @author jesus
@@ -13,7 +16,17 @@ public class Json {
     
     private int status;
     private String msg;
+    private Map<String,String> params;
 
+    public Map<String, String> getParams() {
+        return params;
+    }
+
+    public void setParams(Map<String, String> params) {
+        this.params = params;
+    }
+
+    
     public int getStatus() {
         return status;
     }

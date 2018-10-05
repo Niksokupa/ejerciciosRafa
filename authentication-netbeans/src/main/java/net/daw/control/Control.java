@@ -9,12 +9,19 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import net.daw.clases.Json;
+import org.omg.CORBA.NameValuePair;
 
 /**
  *
@@ -40,6 +47,8 @@ public class Control extends HttpServlet {
 
         Json json = new Json();
 
+        MakePairs(request.getQueryString());
+
         String opcion = request.getParameter("opcion");
         String usuario = request.getParameter("usuario");
         String pass = request.getParameter("pass");
@@ -57,17 +66,23 @@ public class Control extends HttpServlet {
                             //Añado el mensaje al json
                             json.setStatus(200);
                             json.setMsg("Usuario loggeado correctamente");
+                            json.setParams(MakePairs(request.getQueryString()));
+                            response.setStatus(200);
                             response.getWriter().append(gSon.toJson(json));
                             break;
                         } else {
                             json.setStatus(401);
                             json.setMsg("Authentication error");
+                            json.setParams(MakePairs(request.getQueryString()));
+                            response.setStatus(401);
                             response.getWriter().append(gSon.toJson(json));
                             break;
                         }
                     } else {
                         json.setStatus(401);
                         json.setMsg("Usuario o contraseña vacio");
+                        json.setParams(MakePairs(request.getQueryString()));
+                        response.setStatus(401);
                         response.getWriter().append(gSon.toJson(json));
                         break;
                     }
@@ -76,18 +91,24 @@ public class Control extends HttpServlet {
                     sesion.invalidate();
                     json.setStatus(200);
                     json.setMsg("Sesion cerrada correctamente");
+                    json.setParams(MakePairs(request.getQueryString()));
+                    response.setStatus(200);
                     response.getWriter().append(gSon.toJson(json));
                     break;
 
                 case "check":
                     if (sesion.getAttribute("sesionUsuario") != null) {
                         json.setStatus(200);
-                        json.setMsg(sesion.getAttribute("sesionUsuario").toString());
+                        json.setMsg("Usuario loggeado: " + sesion.getAttribute("sesionUsuario").toString());
+                        json.setParams(MakePairs(request.getQueryString()));
+                        response.setStatus(200);
                         response.getWriter().append(gSon.toJson(json));
                         break;
                     } else {
                         json.setStatus(401);
                         json.setMsg("Logeate para ver la sesion");
+                        json.setParams(MakePairs(request.getQueryString()));
+                        response.setStatus(401);
                         response.getWriter().append(gSon.toJson(json));
                         break;
                     }
@@ -96,18 +117,24 @@ public class Control extends HttpServlet {
                     if (sesion.getAttribute("sesionUsuario") != null) {
                         json.setStatus(200);
                         json.setMsg("1236512368512635");
+                        json.setParams(MakePairs(request.getQueryString()));
+                        response.setStatus(200);
                         response.getWriter().append(gSon.toJson(json));
                         break;
                     } else {
                         json.setStatus(401);
                         json.setMsg("Logeate para ver codigo secreto");
+                        json.setParams(MakePairs(request.getQueryString()));
+                        response.setStatus(401);
                         response.getWriter().append(gSon.toJson(json));
                         break;
                     }
 
                 default:
                     json.setStatus(401);
-                    json.setMsg("Selecciona una opcion");
+                    json.setMsg("Añade una opcion");
+                    json.setParams(MakePairs(request.getQueryString()));
+                    response.setStatus(401);
                     response.getWriter().append(gSon.toJson(json));
                     break;
 
@@ -115,9 +142,45 @@ public class Control extends HttpServlet {
         } else {
             json.setStatus(401);
             json.setMsg("Añade una opcion");
+            json.setParams(MakePairs(request.getQueryString()));
+            response.setStatus(401);
             response.getWriter().append(gSon.toJson(json));
         }
 
+    }
+
+    //Fuente:
+    // https://codereview.stackexchange.com/questions/175332/splitting-url-query-string-to-key-value-pairs
+    public static Map<String, String> MakePairs(String input) {
+        ArrayList<String> querys = new ArrayList<>();
+        Map<String, String> retVal = new HashMap<>();
+        int fromIndex = 0;
+        int toIndex = 0;
+        while (toIndex != -1) {
+            String key = "";
+            String value = "";
+            toIndex = input.indexOf('=', fromIndex);
+            if (toIndex - fromIndex > 1) {
+                key = input.substring(fromIndex, toIndex);
+                fromIndex = toIndex + 1;
+                toIndex = input.indexOf('&', fromIndex);
+                if (toIndex == -1) {
+                    value = input.substring(fromIndex, input.length());
+                } else {
+                    value = input.substring(fromIndex, toIndex);
+                }
+                retVal.put(key, value);
+                fromIndex = toIndex + 1;
+            } else {
+                fromIndex = input.indexOf('&', toIndex) + 1;
+            }
+        }
+        Iterator it = retVal.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry res = (Map.Entry)it.next();
+            querys.add(res.getKey() + " = " + res.getValue());
+        }
+        return retVal;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
