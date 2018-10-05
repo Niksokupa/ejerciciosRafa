@@ -15,7 +15,7 @@
                 </div>
                 <div class="row justify-content-center mt-5" id="form">
                     <div class="col-3">
-                        <form id="formulario">
+                        <form id="formulario" >
                             <div class="form-group">
                                 <label id="primeroLabel">Usuario</label>
                                 <input type="text" class="form-control" id="primero">
@@ -49,7 +49,7 @@
                             <hr>
                             <p class="mb-0" id="resultadoOperacionError"></p>
                             <hr>
-                            <h4 class="alert-heading" id="tituloParamsError">Parametros:</h4>
+                            <h4 class="alert-heading" id="tituloResultadoError">Parametros:</h4>
                             <p class="mb-0" id="resultadoParametrosError"></p>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                             <hr>
                             <p class="mb-0" id="resultadoOperacion"></p>
                             <hr>
-                            <h4 class="alert-heading">Parametros:</h4>
+                            <h4 class="alert-heading" >Parametros:</h4>
                             <p class="mb-0" id="resultadoParametros"></p>
                         </div>
                     </div>
@@ -167,6 +167,7 @@
                         method: "GET",
                         success: function (data) {
                             cargaResultado(data);
+                            $('#formulario').hide();
                         },
                         error: function (data) {
                             errorServer(data);
@@ -206,6 +207,7 @@
                         method: "GET",
                         success: function (data) {
                             cargaResultado(data);
+                            $('#formulario').show();
                         },
                         error: function (data) {
                             errorServer(data);
@@ -242,6 +244,11 @@
                     $("#tituloResultadoError").empty().append(`Status: ${data.responseJSON.status}`);
                     $("#resultadoParametrosError").hide();
                     $("#tituloParamsError").hide();
+                    var params = '';
+                    Object.keys(data.responseJSON.params).forEach(function (key) {
+                        params = `${params} <br /> ${key} = ${data.responseJSON.params[key]}`;
+                    });
+                    $("#resultadoParametrosError").show().empty().append(params);
                 }
 
                 //Limpiar la tabla

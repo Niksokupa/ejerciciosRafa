@@ -41,19 +41,11 @@ public class Control extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        PrintWriter out = response.getWriter();
         HttpSession sesion = request.getSession();
-        Gson gSon = new Gson();
-
-        Json json = new Json();
-
-        MakePairs(request.getQueryString());
 
         String opcion = request.getParameter("opcion");
         String usuario = request.getParameter("usuario");
         String pass = request.getParameter("pass");
-
-        HttpSession sesionUsuario;
 
         if (opcion != null) {
             switch (opcion) {
@@ -145,10 +137,12 @@ public class Control extends HttpServlet {
             }
         }
         Iterator it = retVal.entrySet().iterator();
+        /*
         while (it.hasNext()) {
             Map.Entry res = (Map.Entry) it.next();
             querys.add(res.getKey() + " = " + res.getValue());
         }
+        */
         return retVal;
     }
 
