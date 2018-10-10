@@ -136,6 +136,7 @@ public class Control extends HttpServlet {
                     } catch (SQLException ex) {
                         respuesta(200, "Error con jdbc", null, response, request);
                     }
+                    break;
                 case "loggin":
                     if (usuario != null && pass != null) {
                         if (usuario.equals("jesus") && pass.equals("jesus")) {
