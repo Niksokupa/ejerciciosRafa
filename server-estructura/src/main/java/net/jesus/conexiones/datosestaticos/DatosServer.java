@@ -11,9 +11,9 @@ package net.jesus.conexiones.datosestaticos;
  */
 public class DatosServer {
     
-    public static final String url = "test";
-    public static final String user = "test";
-    public static final String pass = "test";
+    public static final String url = "jdbc:mysql://localhost:3306/trolleyes";
+    public static final String user = "root";
+    public static final String pass = "";
     
     
 }

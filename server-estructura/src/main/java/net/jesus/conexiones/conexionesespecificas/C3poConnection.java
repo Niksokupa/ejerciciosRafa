@@ -16,21 +16,34 @@ import net.jesus.conexiones.datosestaticos.DatosServer;
  */
 public class C3poConnection implements ConnectionInterface {
 
-    //Implemento los metodos de la clase ConnectionInterface
+    private ComboPooledDataSource config = null;
+    private Connection conexion = null;
+
     @Override
+
     public Connection newConnection() throws Exception {
-
-        ComboPooledDataSource cpds = new ComboPooledDataSource();
-        cpds.setJdbcUrl(DatosServer.url);
-        cpds.setUser(DatosServer.user);
-        cpds.setPassword(DatosServer.pass);
-
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            config = new ComboPooledDataSource();
+            config.setJdbcUrl(DatosServer.url);
+            config.setUser(DatosServer.user);
+            config.setPassword(DatosServer.pass);
+            config.setMaxStatements(180);
+            conexion = config.getConnection();
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
+        return conexion;
     }
 
     @Override
     public void disposeConnection() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            if (conexion != null) {
+                conexion.close();
+            }
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
 }

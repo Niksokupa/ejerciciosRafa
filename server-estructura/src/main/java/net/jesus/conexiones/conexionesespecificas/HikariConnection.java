@@ -5,8 +5,12 @@
  */
 package net.jesus.conexiones.conexionesespecificas;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
+import java.sql.SQLException;
 import net.jesus.conexiones.connectioninterface.ConnectionInterface;
+import net.jesus.conexiones.datosestaticos.DatosServer;
 
 /**
  *
@@ -14,19 +18,40 @@ import net.jesus.conexiones.connectioninterface.ConnectionInterface;
  */
 public class HikariConnection implements ConnectionInterface {
 
-    //Aqui llamaria a un metodo que me guarda los datos como la url, el usuario
-    //la pass... para usarlo abajo, y asi poder crear la conexion con la base de datos
-    public String datosConexion = null;
+    HikariDataSource oConnectionPool = null;
+    Connection connection = null;
 
     //Implemento los metodos de la clase ConnectionInterface
     @Override
     public Connection newConnection() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(DatosServer.url);
+        config.setUsername(DatosServer.user);
+        config.setPassword(DatosServer.pass);
+
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+
+        try {
+            oConnectionPool = new HikariDataSource(config);
+            connection = (Connection) oConnectionPool.getConnection();
+        } catch (SQLException e) {
+            throw new Exception(e);
+        }
+        return connection;
     }
 
     @Override
     public void disposeConnection() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
 }
