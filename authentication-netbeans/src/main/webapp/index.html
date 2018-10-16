@@ -97,6 +97,7 @@
             $("#divErrorJava").hide();
             //Document ready
             $(document).ready(function () {
+                loggeado();
                 $("#loggearse").attr("disabled", true);
 
                 //Desabilito el titulo de resultado
@@ -108,6 +109,23 @@
                 //+info: https://stackoverflow.com/questions/4655376/jquery-bind-keyup-to-body-in-firefox
                 $("body").on('keyup', "#primero", validarPrimero);
                 $("body").on('keyup', "#segundo", validarSegundo);
+
+                function loggeado(){
+                    $.ajax({
+                        url: `loggin?opcion=check`,
+                        dataType: "json",
+                        method: "GET",
+                        success: function (data) {
+                           if(data !== null){
+                               $('#formulario').hide();
+                               cargaResultado(data);
+                               
+                           }else{
+                               $('#formulario').show();
+                           }
+                        }
+                    });
+                }
 
                 //Funcion que me muestra los mensajes de error debajo de cada input
                 function mensajes(error, div, mensaje) {
